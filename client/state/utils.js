@@ -6,6 +6,7 @@
 
 import validator from 'is-my-json-valid';
 import {
+	findKey,
 	forEach,
 	get,
 	isEmpty,
@@ -23,7 +24,7 @@ import LRU from 'lru';
 /**
  * Internal dependencies
  */
-import { DESERIALIZE, SERIALIZE } from 'state/action-types';
+import { APPLY_STORED_STATE, DESERIALIZE, SERIALIZE } from 'state/action-types';
 import { SerializationResult } from 'state/serialization-result';
 import warn from 'lib/warn';
 
@@ -474,6 +475,32 @@ function serializeState( reducers, state, action ) {
 	);
 }
 
+function applyStoredState( reducers, state, action ) {
+	// Find if any of the reducers matches the desired storageKey
+	const reducerKey = findKey( reducers, { storageKey: action.storageKey } );
+
+	if ( ! reducerKey ) {
+		return state;
+	}
+
+	// Replace the value for the key we want to init with action.state. Leave other keys intact.
+	return mapValues( state, ( value, key ) => ( key === reducerKey ? action.storedState : value ) );
+}
+
+function getStorageKeys( reducers ) {
+	return function*() {
+		for ( const reducer of Object.values( reducers ) ) {
+			if ( reducer.storageKey ) {
+				yield { storageKey: reducer.storageKey, reducer };
+			}
+
+			if ( reducer.getStorageKeys ) {
+				yield* reducer.getStorageKeys();
+			}
+		}
+	};
+}
+
 /**
  * Create a new reducer from original `reducers` by adding a new `reducer` at `keyPath`
  * @param {Function} origReducer Original reducer to copy `storageKey` and other flags from
@@ -612,6 +639,10 @@ function createCombinedReducer( reducers ) {
 		switch ( action.type ) {
 			case SERIALIZE:
 				return serializeState( reducers, state, action );
+
+			case APPLY_STORED_STATE:
+				return applyStoredState( reducers, state, action );
+
 			default:
 				return combined( state, action );
 		}
@@ -619,6 +650,7 @@ function createCombinedReducer( reducers ) {
 
 	combinedReducer.hasCustomPersistence = true;
 	combinedReducer.addReducer = addReducer( combinedReducer, reducers );
+	combinedReducer.getStorageKeys = getStorageKeys( reducers );
 
 	return combinedReducer;
 }
