@@ -101,7 +101,7 @@ ProductsList.prototype.fetch = function() {
 				try {
 					localStorage.setItem( 'ProductsList', JSON.stringify( productsList ) );
 				} catch ( e ) {
-					// in case of bad data, do nothing, leave data undefined and just fetch again
+					// ignore problems storing the list into local storage
 				}
 			}
 		}.bind( this )
