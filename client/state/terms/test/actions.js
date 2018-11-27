@@ -56,10 +56,10 @@ const taxonomyName = 'jetpack-testimonials';
 const categoryTaxonomyName = 'category';
 
 describe( 'actions', () => {
-	const spy = sinon.spy();
+	let spy;
 
 	beforeEach( () => {
-		spy.resetHistory();
+		spy = sinon.spy();
 	} );
 
 	describe( 'addTerm()', () => {
