@@ -14,6 +14,8 @@ jest.mock( 'lib/impure-lodash', () => ( {
 	debounce: cb => cb,
 } ) );
 
+jest.useFakeTimers();
+
 const testDispatch = ( test, testCallNumber ) => {
 	let calls = 0;
 	return action => {
@@ -40,6 +42,8 @@ describe( 'WPorg Data Actions', () => {
 				done();
 			}, 2 )
 		);
+
+		jest.runOnlyPendingTimers();
 	} );
 
 	test( "FetchPluginData action shouldn't return an error", done => {
@@ -48,6 +52,7 @@ describe( 'WPorg Data Actions', () => {
 				done( action.error );
 			}, 2 )
 		);
+		jest.runOnlyPendingTimers();
 	} );
 
 	test( 'FetchPluginData action should return a plugin ', done => {
@@ -57,12 +62,16 @@ describe( 'WPorg Data Actions', () => {
 				done();
 			}, 2 )
 		);
+		jest.runOnlyPendingTimers();
 	} );
 
 	test( "FetchPluginData action should not make another request if there's already one in progress", () => {
 		wporg.deactivatedCallbacks = true;
 		fetchPluginData( 'test' )( function() {} );
+		jest.runOnlyPendingTimers();
+
 		fetchPluginData( 'test' )( function() {} );
+		jest.runOnlyPendingTimers();
 		assert.equal( wporg.getActivity().fetchPluginInformation, 1 );
 	} );
 } );
