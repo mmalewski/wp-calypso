@@ -62,8 +62,8 @@ export const allSiteTypes = [
 		description: i18n.translate( 'Sell your collection of products online. ' ),
 		theme: 'pub/dara',
 		designType: 'page',
-		siteTitleLabel: '',
-		siteTitlePlaceholder: '',
+		siteTitleLabel: i18n.translate( 'What is the name of your store?' ),
+		siteTitlePlaceholder: i18n.translate( "E.g. Mel's Diner" ),
 	},
 ];
 
