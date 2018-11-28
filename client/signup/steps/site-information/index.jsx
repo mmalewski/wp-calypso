@@ -184,6 +184,7 @@ export default connect(
 	( dispatch, ownProps ) => ( {
 		submitStep: ( { name, address, email, phone } ) => {
 			const siteTitle = trim( name );
+			const siteTitleTracksAttribute = siteTitle || 'N/A';
 			address = trim( address );
 			email = trim( email );
 			phone = trim( phone );
@@ -191,7 +192,7 @@ export default connect(
 			dispatch( setSiteInformation( { address, email, phone } ) );
 			dispatch(
 				recordTracksEvent( 'calypso_signup_actions_submit_site_information', {
-					siteTitle,
+					site_title: siteTitleTracksAttribute,
 					address,
 					email,
 					phone,
