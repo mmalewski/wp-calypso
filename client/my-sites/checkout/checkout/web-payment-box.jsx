@@ -113,18 +113,18 @@ export function getWebPaymentMethodName( webPaymentMethod ) {
  */
 export class WebPaymentBox extends React.Component {
 	static propTypes = {
-		cart: PropTypes.shape( {
+		cart: PropTypes.shape({
 			currency: PropTypes.string.isRequired,
 			total_cost: PropTypes.number.isRequired,
 			products: PropTypes.array.isRequired,
-		} ).isRequired,
-		transaction: PropTypes.shape( {
+		}).isRequired,
+		transaction: PropTypes.shape({
 			payment: PropTypes.object,
-		} ).isRequired,
-		transactionStep: PropTypes.shape( {
+		}).isRequired,
+		transactionStep: PropTypes.shape({
 			name: PropTypes.string.isRequired,
 			error: PropTypes.object,
-		} ).isRequired,
+		}).isRequired,
 		countriesList: PropTypes.array.isRequired,
 		onSubmit: PropTypes.func.isRequired,
 		translate: PropTypes.func.isRequired,
@@ -206,7 +206,7 @@ export class WebPaymentBox extends React.Component {
 				return completingState();
 
 			default:
-				throw new Error( `Unknown transaction step: ${ transactionStep.name }.` );
+				throw new Error( `Unknown transaction step: ${transactionStep.name}.` );
 		}
 	};
 
@@ -383,7 +383,7 @@ export class WebPaymentBox extends React.Component {
 				break;
 
 			default:
-				debug( `Unknown or unhandled payment method ${ paymentMethod }.` );
+				debug( `Unknown or unhandled payment method ${paymentMethod}.` );
 		}
 	};
 
@@ -426,7 +426,7 @@ export class WebPaymentBox extends React.Component {
 					button = (
 						<button
 							type="submit"
-							onClick={ event => this.submit( paymentMethod, event ) }
+							onClick={ ( event ) => this.submit( paymentMethod, event ) }
 							disabled={ buttonDisabled }
 							className="web-payment-box__apple-pay-button"
 						/>
@@ -450,7 +450,7 @@ export class WebPaymentBox extends React.Component {
 					<Button
 						type="submit"
 						className="button is-primary button-pay pay-button__button"
-						onClick={ event => this.submit( paymentMethod, event ) }
+						onClick={ ( event ) => this.submit( paymentMethod, event ) }
 						busy={ buttonState.disabled }
 						disabled={ buttonDisabled }
 					>
@@ -460,7 +460,7 @@ export class WebPaymentBox extends React.Component {
 				break;
 
 			default:
-				debug( `Unknown payment method ${ paymentMethod }.` );
+				debug( `Unknown payment method ${paymentMethod}.` );
 		}
 
 		return (
