@@ -29,6 +29,11 @@ import InfoPopover from 'components/info-popover';
 import { getSiteTypePropertyValue } from 'lib/signup/site-type';
 import { recordTracksEvent } from 'state/analytics/actions';
 
+/**
+ * Style dependencies
+ */
+import './style.scss';
+
 class SiteInformation extends Component {
 	constructor( props ) {
 		super( props );
